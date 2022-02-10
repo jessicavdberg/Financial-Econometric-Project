@@ -73,9 +73,16 @@ fontsize: 11pt                  # Set fontsize
 linestretch: 1.2                # Set distance between lines.
 link-citations: TRUE            # This creates dynamic links to the papers in reference list.
 
-### Adding additional latex packages:
+Adding additional latex packages:
 # header-includes:
-#    - \usepackage{colortbl} # Add additional packages here.
+    - \usepackage{colortbl} 
+    - \usepackage{amsmath}
+    - \usepackage{graphicx}
+    - \usepackage{adjustbox}
+    - \usepackage{caption}
+    - \usepackage{float}
+    - \usepackage{subfig}
+    - \usepackage{subcaption}
 
 output:
   pdf_document:
@@ -104,6 +111,9 @@ library(tidyverse)
 library(devtools)
 library(dplyr)
 library(readxl)
+library("FactoMineR")
+library("factoextra")
+library("corrplot")
 
 pacman::p_load("tidyverse", "devtools", "rugarch", "forecast", 
                "tbl2xts", "lubridate", "PerformanceAnalytics", "ggthemes", 
@@ -139,30 +149,192 @@ data <- data[, -c(4,5)]
 use_data <- data %>% spread(Currency, Value)
 colnames(use_data)
 
-#Splitting Emerging and Developing
-
-# Frontier Markets: Nigeria, Romania, Zambia, Ghana, Bulgaria, Argentina, Botswanna, Uganda
-frontier <- use_data[, -c(3,5,7,8,9,10,11,12,13,14,16,17,18,19,20,21,22,24,25,26,27,28,30,31,32,33,34,35,36,37,38,39,41)]
-
-# Emerging Market Currency: Peru, Saudi, Taiwan, Czech, SouthKorea, China, India, Brazil, Turkey, Russia, China, SouthAfrica,  Mexico, Columbia, Egypt, Chile, Hungary, Malaysia, Philipines, Thailand, UAE, Poland, Brazil
-
-EM <- use_data[, -c(2,3,4,6,7,12,14,15,16,19,20,23,24,25,29,32,35,40,41)]
-# Developing Market Currency : Japan, HongKong, Canada, Denmark, EU, Australia, NZ, Singapore, Sweden, Norway, UK, Israel, 
-
-DM <- use_data[, -c(2,4,5,6,8,9,10,11,13,15,17,18,21,22,23,26,27,28,29,30,31,33,34,36,37,38,39,40,42)]
-
 ## According to MSCI
 ```
 
 
 ```{r}
-data %>% ggplot() + 
+# Only emerging and developed countries - not frontiers
+use <- use_data[,-c(2,4,6,15,23,29,40,42)]
+
+use <- use %>% select(-date)
+
+# By hand 
+covmat <- cov(use)
+# Em is emerging and DM is devleoped, both with date column. 
+
+res.pca <- PCA(use, graph = FALSE)
+
+
+eig.val <- get_eigenvalue(res.pca)
+
+# Scree plot 
+fviz_eig(res.pca, addlabels = TRUE, ylim = c(0, 50))
+
+
+```
+
+
+
+
+```{r}
+var <- get_pca_var(res.pca)
+
+
+# Coordinates
+head(var$coord)
+# Cos2: quality on the factore map
+head(var$cos2)
+# Contributions to the principal components
+head(var$contrib)
+
+
+fviz_pca_var(res.pca, col.var = "black")
+
+corrplot(var$cos2, is.corr=FALSE)
+
+fviz_cos2(res.pca, choice = "var", axes = 1:2)
+
+
+# Contributions of variables to PC1
+fviz_contrib(res.pca, choice = "var", axes = 1, top = 10)
+# Contributions of variables to PC2
+fviz_contrib(res.pca, choice = "var", axes = 2, top = 10)
+
+# Total contribution by Pc1 and PC2
+fviz_contrib(res.pca, choice = "var", axes = 1:2, top = 10)
+
+
+fviz_pca_var(res.pca, col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"))
+
+# Calculation of portion of variance explained 
+
+
+eigen.val <- get_eigenvalue(res.pca)
+eigen.val
+
+```
+
+```{r}
+
+## This picture is saved and will be pasted into (just the code for it.)
+g <- data %>% ggplot() + 
     geom_line(aes(date, Value, color= Currency)) + 
     fmxdat::theme_fmx() + 
     facet_wrap(~Currency, scales = "free_y") + 
     theme(legend.position = "none") 
 
+
 ```
+
+
+```{r}
+data_wide <- use_data %>% select(-date)
+
+
+## PCA using princomp 
+
+pca1 <- prcomp(data_wide)
+str(pca1)
+pca1$sdev
+pca1$rotation
+plot(pca1, type = "l")
+summary(pca1)
+PC_Indexes <- predict(pca1)
+
+## PCA using psuch package 
+
+pacman::p_load("psych")
+g <- outlier(data_wide, plot = TRUE, na.rm = TRUE)
+
+violinBy(data_wide %>% as.matrix)
+
+pcapsych <- principal(data_wide, rotate = "varimax")
+
+## FactoMineR and Factroextra
+
+if (!require(FactoMineR)) install.packages("FactoMineR")
+if (!require(factoextra)) install.packages("factoextra")
+
+fviz_screeplot(pca1, ncp = 10)
+
+fviz_pca_var(pca1, col.var = "steelblue") + theme_minimal()
+
+fviz_contrib(pca1, choice = "var", axes = 1)
+
+fviz_contrib(pca1, choice = "var", axes = 2)
+
+fviz_contrib(pca1, choice = "var", axes = 1:2)
+```
+
+# PCA Analysis 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{scree.jpg}
+\caption{Scree plot}
+\label{scree}
+\end{figure}
+
+# Identifying Common Drivers 
+
+The principal component is used to analyse the driving forces. By comparing the eigenvalues of the variance-covariance matrix in the previous section, I determined that the first three principal components explain the majority of the total variance of the currency rates.  In this section, I examine the correlation between the first three principal component and the currency rates, as well as provide economic interpretations around the core driving factors that affect currency rates. 
+
+Table \ref{pca1} in the appendix shows the correlation and p-value for the first principal component (PC1). The country that has the highest positive correlation with PC1 is Hungary (HUF), which is a net importer of crude petroleum. Saudi Arabia (SAR) and the United Arab Emirates (AED) are two of the top exporting countries. China (CNY) is the only country with a negative correlation with PC1, with its top import being refined petroleum.  Therefore, one would expect that the oil price is one of the core PCA drivers for currencies.
+
+Oil is an extremely important, non-renewable resource. The demand and price for oil tend to drastically increase with world economic development @li2015. Crude oil is quoted in the U.S dollar, therefore there is a direct relationship between the two. Theoretically, an appreciation in the US dollar should cause a decrease in the price of oil. However, empirical research has found contradicting results, indicating a bi-directional causality relationship between oil and exchange rates @beck2020.  Fluctuations in the oil prices are diverse and unique, depending on whether a country is a net importing or net exporting country. For oil-importing countries, @castro found that an oil price shock leads to depreciation of the home currency in the short run, however, the long-run effects are diverse.
+
+For oil-exporting countries, it has been empirically proven that instability in the oil price does not have a significant effect on economic growth. Table \ref{pca1} supports the results of @can2021 who found a much stronger correlation for oil-importing countries. China is a unique case has it is one of the largest importers and exporters of oil. @li2015 found a non-linear causality between the oil price and the RMB exchange rate. This indicates that movement in the price of oil can cause co-movement of RMB with a one-month lag. Since the relationship between the oil price and exchange rates are diverse and unique, policymakers should react with caution when examining exchange rate pressure.
+
+Table \ref{pca2} in the appendix displays the correlation and the p-value for the second principal component (PC2). The countries that have the highest correlation with PC2 are, amongst others, Singapore (SGD), New Zealand (NZD), Australia (AUD) and Canada (CAD), all developing market economies. The countries with the lowest correlation with PC2 are Turkey (TRY), Egypt (EGP) and Mexico (MXN). This suggest that the PC2 is related to political stability. Countries with a high political stability and absence of violence/terrorism ranking are highly correlated with PC2, whereas countries with a low ranking are often negatively correlated with PC2. 
+
+A country with a high political stability ranking offer much more safe and attractive investment opportunity for foreign investors. This implies that political stability has a significant effect on currency rates. Political unrest, such a serious allegation into government conduct can contribute to the destabilization of an economy, which will weaken currency rates. Changes in currency rates are known as \emph{exchange rate risk} which accounts for uncertainty in movement in the exchange rate between the home and receiver country @higg.
+
+Although the effect of political instability is profound, @levis found that the relationship between political instability in developed countries and foreign direct invest are highly significant in the short run, but not the long run. This would suggest that foreign investors adjust quickly to new developments and that political stability should be considered in conjunction with numerous other relevant factors. 
+
+The correlation and the p-value for the third principal component is represented in Table \ref{pca3} in the appendix. The countries with the largest correlation all appear in Asia and the countries with the lowest correlation are all developed market. This implies that the third principal component is an Asia-specific factor. Over the past few areas, Asian countries have experienced phenomenal growth, which has created profitable opportunities for foreign investors. 
+
+# Forecasting 
+
+\begin{figure}
+\centering 
+\begin{minipage}[t]{8.2cm} 
+\centering 
+ \includegraphics[width=\linewidth]{for1.jpg} 
+ \end{minipage} 
+ \hspace{0.1cm} 
+ \begin{minipage}[t]{8.2cm} 
+ \centering 
+ \includegraphics[width=\linewidth]{for2.jpg} 
+ \end{minipage}
+\caption{caption}
+\label{for}
+\end{figure}
+
+
+
+\begin{figure}
+\centering 
+\begin{minipage}[t]{8.2cm} 
+\centering 
+ \includegraphics[width=\linewidth]{fore1.jpg} 
+ \end{minipage} 
+ \hspace{0.1cm} 
+ \begin{minipage}[t]{8.2cm} 
+ \centering 
+ \includegraphics[width=\linewidth]{fore2.jpg} 
+ \end{minipage}
+\caption{caption1}
+\label{for1}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{fore3.jpg}
+\caption{caption}
+\label{for2}
+\end{figure}
 
 
 
@@ -178,9 +350,186 @@ data %>% ggplot() +
 
 # Appendix {-}
 
-## Appendix A {-}
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|} 
+ \hline
+ \multicolumn{2}{|c|}{Emerging Market} & \multicolumn{2}{|c|} {Developed Market} \\
+ \hline
+ Currency & ISO Code & Currency & ISO Code \\
+ \hline
+  Sol & PEN & Japanese Yen & JPY \\
+ Saudi riyal & SAR &  Hong Kong dollar & HKD \\
+ New Taiwan dollar & TWD & Canadian dollar & CAD \\
+ Czech koruna & CZK & Danish krone & DKK \\
+ South Korean won & KRW & Euro & EUR \\
+ Renminbi & CNY & Australian dollar & AUD \\
+ Indian rupee & INR &  New Zealand dollar & NZD \\
+ Brazilian real & BRL & Singapore dollar & SGD \\
+ Turkish lira & TRY &  Swedish Krona & SEK  \\
+ Russian ruble & RUB & Norwegian krone & NOK \\
+ South African rand & ZAR & Isreali Shekel & ILS \\
+ Mexican peso & MXN & Pound sterling & GBP \\
+ Columbian peso & COP & & \\
+ Egyptian pound & EGP & & \\
+ Chilean peso & CLP & & \\
+ Hungarian forint & HUF & & \\
+ Malaysian ringgit & MYR & & \\
+ Phillipine peso & PHP & & \\
+Thai bath & THB & & \\
+United Arab Emirates dirham & AED & & \\
+Polish złoty & PLN & & \\
+\hline
+\end{tabular}
+\caption{Description of currencies}
+ \label{cncy}
+\end{center}
+\end{table}
 
-Some appendix information here
+```{r}
+# This shows the correlation and p-value. 
 
-## Appendix B {-}
+res.desc <- dimdesc(res.pca, axes = 1:3, proba = 0.05)
+# Description of dimension 1
+res1 <- res.desc$Dim.1
 
+# Description of dimension 2
+res2 <- res.desc$Dim.2
+
+res3 <- res.desc$Dim.3
+```
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|} 
+ \hline
+ & Correlation & P-value  \\
+ \hline
+ HUF & 0.9262878 & 0.000000e+00 \\
+ MYR & 0.9114497 & 0.000000e+00 \\
+ CLP & 0.9065261 & 0.000000e+00 \\
+ PEN & 0.8988561 & 0.000000e+00 \\
+ PLN & 0.8780890 & 0.000000e+00 \\
+ COP & 0.8751020 & 0.000000e+00 \\
+ NOK & 0.8378328 & 0.000000e+00 \\
+ SEK & 0.8330755 & 0.000000e+00 \\
+ BRL & 0.8263736 & 0.000000e+00 \\
+ RUB & 0.7871421 & 0.000000e+00 \\
+ ZAR & 0.7857282 & 0.000000e+00 \\
+ INR & 0.7411845 & 0.000000e+00 \\
+ PHP & 0.7307233 & 0.000000e+00 \\
+ MXN & 0.6843628 & 0.000000e+00 \\ 
+ TRY & 0.6753067 & 0.000000e+00 \\
+ EUR & 0.6577914 & 0.000000e+00 \\
+ DKK & 0.6479256 & 0.000000e+00 \\
+ KRW & 0.6422958 & 0.000000e+00 \\
+ GBP & 0.6259090 & 0.000000e+00 \\
+ EGP & 0.6216001 & 0.000000e+00 \\
+ AUD & 0.5593268 & 0.000000e+00 \\
+ THB & 0.5319724 & 0.000000e+00 \\
+ HKD & 0.5177139 & 0.000000e+00 \\
+ TWD & 0.4758927 & 0.000000e+00 \\
+ CAD & 0.4283742 & 3.557371e-319 \\
+ JPY & 0.4241386 & 2.822415e-319 \\
+ NZD & 0.3989511 & 3.069525e-273 \\
+ ILS & 0.3742421 & 4.183071e-238 \\
+ SGD & 0.2588114 & 1.665786e-110 \\
+ CZK & 0.2551624 & 2.320584e-107 \\
+ AED & 0.2038677 & 2.137731e-68 \\
+ SAR & 0.1573449 & 3.994842e-41 \\
+ CNY & -0.1710389 & 2.206939e-48 \\
+\hline
+\end{tabular}
+\caption{Correlation and P-value for the first principal component }
+ \label{pca1}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|} 
+ \hline
+ & Correlation & P-value  \\
+ \hline
+SGD & 0.90321526 & 0.000000e+00 \\
+CZK & 0.87653914 & 0.000000e+00 \\
+CNY & 0.86382354 & 0.000000e+00 \\
+NZD & 0.83337067 & 0.000000e+00 \\
+AUD & 0.75831445 & 0.000000e+00 \\
+CAD &  0.71356174 & 0.000000e+00 \\
+DKK & 0.63254705 & 0.000000e+00 \\
+EUR & 0.62951387 & 0.000000e+00 \\
+THB &  0.59809540 & 0.000000e+00 \\
+JPY  & 0.53230115 & 0.000000e+00 \\
+ILS & 0.48051271 & 0.000000e+00 \\
+TWD & 0.42403389 & 4.168569e-312 \\
+SEK & 0.35444999 & 4.308577e-212 \\
+PLN & 0.26203282 & 2.533385e-113 \\
+NOK & 0.19878697 & 4.705671e-65 \\
+KRW & 0.14350307 & 1.991097e-34 \\
+PEN & 0.11407789 & 2.773568e-22 \\
+AED & -0.03178834 & 6.993189e-03 \\
+MYR & -0.03679994 & 1.792246e-03 \\
+HKD & -0.04911994 & 3.056982e-05 \\
+PHP & -0.11881763 & 4.754379e-24 \\
+HUF &  -0.13573551 & 6.020449e-31 \\
+CLP & -0.21440682 & 1.272391e-75 \\
+GBP &  -0.27266672 & 6.567991e-123 \\
+COP & -0.36995837 & 2.561588e-232 \\
+BRL & -0.43981305 & 0.000000e+00 \\
+ZAR & -0.55307034 & 0.000000e+00 \\
+RUB & -0.58376817 & 0.000000e+00 \\
+INR & -0.62851292 & 0.000000e+00 \\
+TRY & -0.64001397 & 0.000000e+00 \\
+EGP & -0.64775485 & 0.000000e+00 \\
+MXN & -0.69994979 & 0.000000e+00 \\
+\hline
+\end{tabular}
+\caption{Correlation and P-value for the second principal component }
+ \label{pca2}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|} 
+ \hline
+ & Correlation & P-value  \\
+ \hline
+ILS & 0.69659804 & 0.000000e+00 \\
+TWD & 0.68427216 & 0.000000e+00 \\
+PHP & 0.61977923 & 0.000000e+00 \\
+THB & 0.53049506 & 0.000000e+00 \\
+HKD & 0.30858474 & 1.310000e-158 \\
+KRW & 0.28839441 & 6.692788e-138 \\
+PEN &  0.28634486 & 6.840019e-136 \\
+SGD & 0.22758825 & 3.214148e-85 \\
+MYR & 0.22365740 & 2.722457e-82 \\
+COP & 0.17404390 & 4.636722e-50 \\
+AED & 0.09417778 & 1.179695e-15 \\
+CLP & 0.08433068 & 7.709335e-13 \\
+RUB & -0.02629516 & 2.568733e-02 \\
+PLN & -0.04475238 & 1.458206e-04 \\
+HUF & -0.07070644 & 1.909999e-09 \\
+CNY &  -0.08335190 & 1.413117e-12 \\
+INF &  -0.09077720 & 1.198224e-14 \\
+ZAR & -0.10617861 & 1.681325e-19 \\
+NZD & -0.14852069 & 8.807498e-37 \\
+TRY & -0.15874418 & 7.742415e-42 \\
+EGP & -0.18399169 & 7.806200e-56 \\
+AUD & -0.20033914 & 4.582160e-66 \\
+SAR & -0.25871186 & 2.032612e-110 \\
+EUR & -0.29838703 & 6.100743e-148 \\
+DKK &  -0.31163124 & 7.020576e-162 \\
+SEK & -0.32101610 & 3.342782e-172 \\
+CZK &  -0.34533690 & 1.002528e-200 \\
+CAD & -0.44548362 & 0.000000e+00 \\
+NOK &  -0.47271370 & 0.000000e+00 \\
+GBP &  -0.61500908 & 0.000000e+00 \\
+\hline 
+\end{tabular}
+\caption{Correlation and P-value for the third principal component}
+ \label{pca3}
+\end{center}
+\end{table}
