@@ -3,7 +3,7 @@
 # Remove comments and add values where applicable.
 # The descriptions below should be self-explanatory
 
-title: "Analysis of Core PCA drivers for Currency Rates"
+title: "The Analysis of Core PCA drivers for Currency Rates"
 subtitle: "Financial Econometric Project"
 
 documentclass: "elsarticle"
@@ -262,9 +262,9 @@ The principal component is used to analyse the driving forces. By comparing the 
 
 Table \ref{pca1} in appendix B shows the correlation and p-value for the first principal component (PC1). The country that has the highest positive correlation with PC1 is Hungary (HUF), which is a net importer of crude petroleum. Saudi Arabia (SAR) and the United Arab Emirates (AED) are two of the top exporting countries. China (CNY) is the only country with a negative correlation with PC1, with its top import being refined petroleum.  Therefore, one would expect that the oil price is one of the core PCA drivers for currencies.
 
-Oil is an extremely important, non-renewable resource. The demand and price for oil tend to drastically increase with world economic development @li2015. Crude oil is quoted in the U.S dollar, therefore there is a direct relationship between the two. Theoretically, an appreciation in the US dollar should cause a decrease in the price of oil. However, empirical research has found contradicting results, indicating a bi-directional causality relationship between oil and exchange rates @beck2020.  Fluctuations in the oil prices are diverse and unique, depending on whether a country is a net importing or net exporting country. For oil-importing countries, @castro found that an oil price shock leads to depreciation of the home currency in the short run, however, the long-run effects are diverse.
+Oil is an extremely important, non-renewable resource. The demand and price for oil tend to drastically increase with world economic development @li2015. Crude oil is quoted in the U.S dollar, therefore there is a direct relationship between the two. Theoretically, an appreciation in the US dollar should cause a decrease in the price of oil. However, empirical research has found contradicting results, indicating a bi-directional causality relationship between oil and currency rates @beck2020.  Fluctuations in the oil prices are diverse and unique, depending on whether a country is a net importing or net exporting country. For oil-importing countries, @castro found that an oil price shock leads to depreciation of the home currency in the short run, however, the long-run effects are diverse.
 
-For oil-exporting countries, it has been empirically proven that instability in the oil price does not have a significant effect on economic growth. Table \ref{pca1} supports the results of @can2021 who found a much stronger correlation for oil-importing countries. China is a unique case has it is one of the largest importers and exporters of oil. @li2015 found a non-linear causality between the oil price and the RMB exchange rate. This indicates that movement in the price of oil can cause co-movement of RMB with a one-month lag. Since the relationship between the oil price and exchange rates are diverse and unique, policymakers should react with caution when examining exchange rate pressure.
+For oil-exporting countries, it has been empirically proven that instability in the oil price does not have a significant effect on economic growth. Table \ref{pca1} supports the results of @can2021 who found a much stronger correlation for oil-importing countries. China is a unique case has it is one of the largest importers and exporters of oil. @li2015 found a non-linear causality between the oil price and the RMB exchange rate. This indicates that movement in the price of oil can cause co-movement of RMB with a one-month lag. Since the relationship between the oil price and currency rates are diverse and unique, policymakers should react with caution when examining currency rate pressure.
 
 Table \ref{pca2} in appendix B displays the correlation and the p-value for the second principal component (PC2). The countries that have the highest correlation with PC2 are, amongst others, Singapore (SGD), New Zealand (NZD), Australia (AUD) and Canada (CAD), all developing market economies. The countries with the lowest correlation with PC2 are Turkey (TRY), Egypt (EGP) and Mexico (MXN). This suggest that the PC2 is related to political stability. Countries with a high political stability and absence of violence/terrorism ranking are highly correlated with PC2, whereas countries with a low ranking are often negatively correlated with PC2. 
 
@@ -319,7 +319,7 @@ The forecast results indicate that the USD/EU rate is forecasted to increase sli
 \label{for2}
 \end{figure}
 
-
+\newpage
 # Conclusion
 
 This paper uses 33 emerging and domestic market currency rates to determine which macroeconomic variables are most important when analysing currency rates.  Since economic models are accompanied with many short comings, such as being overly restrictive, this paper uses a principal component analysis technique to reduce the dimensionality of the datasets in an interpretable way while minimizing information loss. The paper concludes that shocks to commodity prices, such as an oil price shock, political instability and the growth of Asian markets should all be used to build prediction models of sport returns. 
