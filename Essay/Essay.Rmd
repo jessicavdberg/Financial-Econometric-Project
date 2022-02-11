@@ -91,7 +91,7 @@ output:
     fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
     fig_height: 3.5
 abstract: |
-  Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
+  Using principal component analysis, I identify the core driving factors of emerging and developing market currency rates. I analyse 33 currencies from 1994-03-30 to 2021-10-29. I find that the first principal component is related to commodities, especially oil. The second principal component relates to political instability and the absence of violence/terrorism. The third principal component relates to some Asian factor.  These factors can be used in further studies to make predictions about currency rates and determine whether they are under/overvalued. .
 ---
 
 <!-- First: Set your default preferences for chunk options: -->
@@ -204,7 +204,7 @@ obs3 <- head(var$contrib)
 
 graph1 <- fviz_pca_var(res.pca, col.var = "black")
 
-graph2 <- corrplot(var$cos2, is.corr=FALSE)
+# graph2 <- corrplot(var$cos2, method="color")
 
 graph3 <- fviz_cos2(res.pca, choice = "var", axes = 1:2)
 
@@ -238,7 +238,7 @@ Analysing 41 emerging and developing market currency rates result in very large 
 \label{scree}
 \end{figure}
 
-The scree plot indicates that the first principal component explains 42.9 percent of the variability, the second explains 27.5 percent and the third explains 10.5 percent. Therefore, the first three principal components explain 80.9 percent of the total variation. Figure \ref{pcpc} displays the first principal component. There is a drastic increase around 2008 during the financial crisis. This reflects the sharp appreciation of the USD against most currencies. The US dollar strengthens due to the global \emph{flight to safety} into US Treasury bills as well as the reversal of carry trades @mcc2009.
+The scree plot indicates that the first principal component explains 42.9 percent of the variability, the second explains 27.5 percent and the third explains 10.5 percent. Therefore, the first three principal components explain 80.9 percent of the total variation. Figure \ref{pcpc} displays the first principal component. There is a drastic increase around 2008 during the financial crisis. This reflects the sharp appreciation of the USD against most currencies. The US dollar strengthens due to the global \emph{flight to safety} into US Treasury bills as well as the reversal of carry trades @mcc2009. The same pattern can be seen during 2020 when the COVID_19 crisis was in full effect, however, the extent is much smaller. 
 
 \begin{figure}
 \centering
