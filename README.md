@@ -1,4 +1,9 @@
 # FM_project
+ This project ... past abstract of the paper. 
+ 
+ In the essay folder, you will find the pdf of the paper that is submitted for grading, called "Essay.pdf". Here, I will explain some of the code that I used. 
+ 
+I loaded the following packages to preform my analysis 
  
 ```r
 library(gridExtra)
@@ -12,6 +17,12 @@ library(forecast)
 library(stats)
 library(tseries)
 
+```
+
+Furthermore, I forecast the currency rates of the three most traded currencies.
+First, I plot the currencies, manipulating the data and making it tidy. I use the "stat_smooth" function to easily recognize patterns. 
+
+```r
 ## Forecasting the three most traded currencies 
 
 p1 <- use_data[,c(1,14,41)] %>% 
@@ -26,7 +37,9 @@ p1 <- use_data[,c(1,14,41)] %>%
       labs(title = "The Euro and The Pound Sterling", subtitle = "") + 
       theme(legend.position = "bottom") 
 p1
-
+ ```
+ 
+ ```r
 p2 <- use_data[,c(1,20)] %>% 
     ggplot() +
     geom_line(aes(x = date, y = Japan, color="steelblue", linetype="dotdash")) + 
@@ -36,6 +49,10 @@ p2 <- use_data[,c(1,20)] %>%
     theme(legend.position = "none") 
 
 p2
+```
+After plotting the data, I use ARIMA function to forecast the currency rates. 
+
+```r
 
 # Forecasting 
 

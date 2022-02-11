@@ -971,6 +971,23 @@ profitable opportunities for foreign investors.
 \hypertarget{forecasting}{%
 \section{Forecasting}\label{forecasting}}
 
+Forecasting currency rates is important to many fields such as
+international business and monetary policy. However, it is challenging
+to obtain accurate forecasts due to the fluctuations caused by political
+instability, shocks to commodity prices and economic events. From an
+investing point of view, an accurate forecast reduces risk related to
+international investments as well as maximizes returns. Monetary policy
+also depends on an accurate forecast of currency rates, as changes in
+the interest rate can either appreciate or depreciate the home currency.
+Changes in currency rate affect trade, which affects economic growth.
+Therefore, an accurate currency forecast can assist authorities to
+implement effective policies that boost economic growth
+\protect\hyperlink{ref-shen}{Shen, Lee, Liu, Chang \& Yang}
+(\protect\hyperlink{ref-shen}{2021}). In this section, I attempt to
+forecast the three most traded currencies: the Euro (EU), the Pound
+sterling (GBP) and the Japanese yen (JPY). Figure \ref{for} displays the
+currency rate for the three currencies, all relative to USD.
+
 \begin{figure}
 \centering 
 \begin{minipage}[t]{8.2cm} 
@@ -982,9 +999,30 @@ profitable opportunities for foreign investors.
  \centering 
  \includegraphics[width=\linewidth]{for2.jpg} 
  \end{minipage}
-\caption{caption}
+\caption{The three most traded currencies}
 \label{for}
 \end{figure}
+
+I employ the 30 periods ahead Autoregressive Integrated Moving Average
+(ARIMA) model to forecast currency rates.
+\protect\hyperlink{ref-akin}{Akincilar, TEMIZ \& Sahin}
+(\protect\hyperlink{ref-akin}{2011}) found that the ARIMA model performs
+relatively well when compared to other forecasting methods. Figure
+\ref{for1} and figure \ref{for2} show the forecasting results for the
+selected currencies with a 95 per cent upper and lower bound. The
+forecast results indicate that the USD/GBP rate is forecasted to
+decrease, implying that the Pound sterling is going to strengthen.
+However, the actual data shows the opposite effect, the GBP currency
+rate weakened.
+
+The forecast results indicate that the USD/EU rate is forecasted to
+increase slightly, implying that the euro is going to decrease. Actual
+data support this forecast. The forecast results indicate that the
+USD/JPY rate is forecasted to decrease slightly, implying that the Pound
+sterling is going to strengthen. Actual data shows that the currency
+rate remained relatively stable, making the forecast results mostly
+accurate. The results should be further investigated to conclude on the
+forecast accuracy, however, this was out of the scope of this paper.
 
 \begin{figure}
 \centering 
@@ -997,14 +1035,14 @@ profitable opportunities for foreign investors.
  \centering 
  \includegraphics[width=\linewidth]{fore2.jpg} 
  \end{minipage}
-\caption{caption1}
+\caption{Forecasting Results (1)}
 \label{for1}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[scale=0.5]{fore3.jpg}
-\caption{caption}
+\caption{Forecasing Results (2)}
 \label{for2}
 \end{figure}
 
@@ -1019,6 +1057,11 @@ profitable opportunities for foreign investors.
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-akin}{}}%
+Akincilar, A., TEMIZ, I. \& Sahin, E. 2011. An application of exchange
+rate forecasting in turkey. \emph{Gazi University Journal of Science}.
+24(4):817--828.
+
 \leavevmode\vadjust pre{\hypertarget{ref-beck2020}{}}%
 Beckmann, J., Czudaj, R.L. \& Arora, V. 2020. The relationship between
 oil prices and exchange rates: Revisiting theory and evidence.
@@ -1049,6 +1092,11 @@ Li, S. \& Ma, D. 2015. Oil price and exchange rate of china--a nonlinear
 granger approach. In Atlantis Press \emph{2015 international conference
 on education technology, management and humanities science (ETMHS
 2015)}. 95--99.
+
+\leavevmode\vadjust pre{\hypertarget{ref-shen}{}}%
+Shen, M.-L., Lee, C.-F., Liu, H.-H., Chang, P.-Y. \& Yang, C.-H. 2021.
+An effective hybrid approach for forecasting currency exchange rates.
+\emph{Sustainability}. 13(5):2761.
 
 \end{CSLReferences}
 

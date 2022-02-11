@@ -297,6 +297,8 @@ The correlation and the p-value for the third principal component is represented
 
 # Forecasting 
 
+Forecasting currency rates is important to many fields such as international business and monetary policy. However, it is challenging to obtain accurate forecasts due to the fluctuations caused by political instability, shocks to commodity prices and economic events. From an investing point of view, an accurate forecast reduces risk related to international investments as well as maximizes returns.  Monetary policy also depends on an accurate forecast of currency rates, as changes in the interest rate can either appreciate or depreciate the home currency. Changes in currency rate affect trade, which affects economic growth. Therefore, an accurate currency forecast can assist authorities to implement effective policies that boost economic growth @shen. In this section, I attempt to forecast the three most traded currencies: the Euro (EU), the Pound sterling (GBP) and the Japanese yen (JPY).  Figure \ref{for} displays the currency rate for the three currencies, all relative to USD.
+
 \begin{figure}
 \centering 
 \begin{minipage}[t]{8.2cm} 
@@ -308,11 +310,13 @@ The correlation and the p-value for the third principal component is represented
  \centering 
  \includegraphics[width=\linewidth]{for2.jpg} 
  \end{minipage}
-\caption{caption}
+\caption{The three most traded currencies}
 \label{for}
 \end{figure}
 
+I employ the 30 periods ahead Autoregressive Integrated Moving Average (ARIMA) model to forecast currency rates. @akin found that the ARIMA model performs relatively well when compared to other forecasting methods. Figure \ref{for1} and figure \ref{for2} show the forecasting results for the selected currencies with a 95 per cent upper and lower bound. The forecast results indicate that the USD/GBP rate is forecasted to decrease, implying that the Pound sterling is going to strengthen. However, the actual data shows the opposite effect, the GBP currency rate weakened. 
 
+The forecast results indicate that the USD/EU rate is forecasted to increase slightly, implying that the euro is going to decrease. Actual data support this forecast. The forecast results indicate that the USD/JPY rate is forecasted to decrease slightly, implying that the Pound sterling is going to strengthen. Actual data shows that the currency rate remained relatively stable, making the forecast results mostly accurate. The results should be further investigated to conclude on the forecast accuracy, however, this was out of the scope of this paper. 
 
 \begin{figure}
 \centering 
@@ -325,14 +329,14 @@ The correlation and the p-value for the third principal component is represented
  \centering 
  \includegraphics[width=\linewidth]{fore2.jpg} 
  \end{minipage}
-\caption{caption1}
+\caption{Forecasting Results (1)}
 \label{for1}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[scale=0.5]{fore3.jpg}
-\caption{caption}
+\caption{Forecasing Results (2)}
 \label{for2}
 \end{figure}
 
