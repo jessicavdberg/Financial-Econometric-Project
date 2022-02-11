@@ -3,7 +3,7 @@
 # Remove comments and add values where applicable.
 # The descriptions below should be self-explanatory
 
-title: "Analysis of Core PCA drivers for Currencies"
+title: "Analysis of Core PCA drivers for Currency Rates"
 subtitle: "Financial Econometric Project"
 
 documentclass: "elsarticle"
@@ -91,7 +91,7 @@ output:
     fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
     fig_height: 3.5
 abstract: |
-  Using principal component analysis, I identify the core driving factors of emerging and developing market currency rates. I analyse 33 currencies from 1994-03-30 to 2021-10-29. I find that the first principal component is related to commodities, especially oil. The second principal component relates to political instability and the absence of violence/terrorism. The third principal component relates to some Asian factor.  These factors can be used in further studies to make predictions about currency rates and determine whether they are under/overvalued. .
+  Using principal component analysis, I identify the core driving factors of emerging and developing market currency rates. I analyse 33 currencies from 1994-03-30 to 2021-10-29. I find that the first principal component is related to commodities, especially oil. The second principal component relates to political instability and the absence of violence/terrorism. The third principal component relates to some Asian factor.  These factors can be used in further studies to make predictions about currency rates and determine whether they are under/overvalued.
 ---
 
 <!-- First: Set your default preferences for chunk options: -->
@@ -135,6 +135,15 @@ currency <- readRDS("C:/Users/jesic/OneDrive/Desktop/DATA/currencies.rds")
 <!-- ############################## -->
 
 # Introduction \label{Introduction}
+
+
+The foreign exchange market is the largest financial market in the world, and it is extremely liquid. It provides investors with a lot of flexibility, since there are no restrictions on the total amount of money that one individual can use for investing. Furthermore, there is also no regulation of the market, implying that it operates on a 24-7 basis @tana.  However, investing in currency rates have often been overlooked as a potential resource of returns for a variety of reasons.  One reason is that currency rates can be challenging to model. The underlying source of value of a currency rate is elusive @pojar. An economic model for currency valuation often uses fundamental macroeconomic variables, such as real income or national money supply, to estimate the fair value of the currency rate. However, these models are often overly restrictive and account for country-specific macroeconomic variables, making it nearly impossible to replicate the results across currency rates. Therefore, an economic model that works well for a specific currency or period may not necessarily work well for other currencies or periods. There is also the risk of central bank intervention in currency rates which deters investors from investing.  However, profit opportunities in the currency market are available but are subject to a high level of risk and are mostly suitable for specialist @pono. 
+
+Taking these shortcomings and strengths into account, this paper uses principal component analysis to analyse the relationship between currency rates and macroeconomic variables. By examining 33 emerging and developing market currency rates, the paper concludes that shocks to commodity prices, such as an oil price shock, political instability and the Asian economy are all important macroeconomic variables that account for most of the variation in currency rates. 
+
+The paper is structured as follows: Section 2 briefly discusses the data, methodology and some descriptive statistics of the principal component analysis. Section 3 provides an in-depth discussion about the core principal component drivers for currency rates. Section 4 forecasts the three most traded currency rates. Finally, section 5 concludes.
+
+
 
 ```{r}
 currency_spread <- currency %>% spread(Name, Price)
@@ -313,6 +322,7 @@ The forecast results indicate that the USD/EU rate is forecasted to increase sli
 
 # Conclusion
 
+This paper uses 33 emerging and domestic market currency rates to determine which macroeconomic variables are most important when analysing currency rates.  Since economic models are accompanied with many short comings, such as being overly restrictive, this paper uses a principal component analysis technique to reduce the dimensionality of the datasets in an interpretable way while minimizing information loss. The paper concludes that shocks to commodity prices, such as an oil price shock, political instability and the growth of Asian markets should all be used to build prediction models of sport returns. 
 
 \newpage
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.2.10)  11 FEB 2022 13:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2022.2.10)  11 FEB 2022 16:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -631,15 +631,23 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 
 {c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<scree.jpg, id=63, 598.48593pt x 421.575pt>
+<scree.jpg, id=69, 598.48593pt x 421.575pt>
 File: scree.jpg Graphic file (type jpg)
 <use scree.jpg>
-Package pdftex.def Info: scree.jpg  used on input line 279.
+Package pdftex.def Info: scree.jpg  used on input line 318.
 (pdftex.def)             Requested size: 418.93729pt x 295.10048pt.
-<pc1.jpg, id=67, 460.72125pt x 327.02174pt>
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[2]
+<pc1.jpg, id=82, 460.72125pt x 327.02174pt>
 File: pc1.jpg Graphic file (type jpg)
 <use pc1.jpg>
-Package pdftex.def Info: pc1.jpg  used on input line 300.
+Package pdftex.def Info: pc1.jpg  used on input line 339.
 (pdftex.def)             Requested size: 414.6453pt x 294.31683pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -648,7 +656,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[2 <./scree.jpg>]
+[3 <./scree.jpg>]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -656,7 +664,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[3 <./pc1.jpg>]
+[4 <./pc1.jpg>]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -664,16 +672,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[4]
-<for1.jpg, id=116, 479.99326pt x 374.5995pt>
+[5]
+<for1.jpg, id=130, 479.99326pt x 374.5995pt>
 File: for1.jpg Graphic file (type jpg)
 <use for1.jpg>
-Package pdftex.def Info: for1.jpg  used on input line 421.
+Package pdftex.def Info: for1.jpg  used on input line 460.
 (pdftex.def)             Requested size: 233.3125pt x 182.08064pt.
-<for2.jpg, id=117, 414.348pt x 332.442pt>
+<for2.jpg, id=131, 414.348pt x 332.442pt>
 File: for2.jpg Graphic file (type jpg)
 <use for2.jpg>
-Package pdftex.def Info: for2.jpg  used on input line 426.
+Package pdftex.def Info: for2.jpg  used on input line 465.
 (pdftex.def)             Requested size: 233.3125pt x 187.19092pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -682,21 +690,21 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[5 <./for1.jpg> <./for2.jpg>]
-<fore1.jpg, id=132, 470.35725pt x 362.5545pt>
+[6 <./for1.jpg> <./for2.jpg>]
+<fore1.jpg, id=146, 470.35725pt x 362.5545pt>
 File: fore1.jpg Graphic file (type jpg)
 <use fore1.jpg>
-Package pdftex.def Info: fore1.jpg  used on input line 457.
+Package pdftex.def Info: fore1.jpg  used on input line 496.
 (pdftex.def)             Requested size: 233.3125pt x 179.83846pt.
-<fore2.jpg, id=133, 471.56175pt x 358.941pt>
+<fore2.jpg, id=147, 471.56175pt x 358.941pt>
 File: fore2.jpg Graphic file (type jpg)
 <use fore2.jpg>
-Package pdftex.def Info: fore2.jpg  used on input line 462.
+Package pdftex.def Info: fore2.jpg  used on input line 501.
 (pdftex.def)             Requested size: 233.3125pt x 177.59145pt.
-<fore3.jpg, id=134, 469.755pt x 365.56575pt>
+<fore3.jpg, id=148, 469.755pt x 365.56575pt>
 File: fore3.jpg Graphic file (type jpg)
 <use fore3.jpg>
-Package pdftex.def Info: fore3.jpg  used on input line 470.
+Package pdftex.def Info: fore3.jpg  used on input line 509.
 (pdftex.def)             Requested size: 234.87692pt x 182.78242pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -705,25 +713,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[6 <./fore1.jpg> <./fore2.jpg> <./fore3.jpg>]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[7]
-<descriptive.jpg, id=149, 883.04906pt x 575.90157pt>
-File: descriptive.jpg Graphic file (type jpg)
-<use descriptive.jpg>
-Package pdftex.def Info: descriptive.jpg  used on input line 582.
-(pdftex.def)             Requested size: 485.67848pt x 316.74684pt.
-
-Overfull \hbox (2.26633pt too wide) in paragraph at lines 582--583
- [][] 
- []
-
+[7 <./fore1.jpg> <./fore2.jpg> <./fore3.jpg>]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -739,7 +729,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[9 <./descriptive.jpg>]
+[9]
+<descriptive.jpg, id=167, 883.04906pt x 575.90157pt>
+File: descriptive.jpg Graphic file (type jpg)
+<use descriptive.jpg>
+Package pdftex.def Info: descriptive.jpg  used on input line 644.
+(pdftex.def)             Requested size: 485.67848pt x 316.74684pt.
+
+Overfull \hbox (2.26633pt too wide) in paragraph at lines 644--645
+ [][] 
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -755,7 +755,23 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[11]
+[11 <./descriptive.jpg>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[12]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[13]
 No file Essay.bbl.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -764,23 +780,23 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[12] (./Essay.aux)
+[14] (./Essay.aux)
 Package rerunfilecheck Info: File `Essay.out' has not changed.
 (rerunfilecheck)             Checksum: 3BE792D79D99238E4D47FDC59012A454;881.
  ) 
 Here is how much of TeX's memory you used:
- 16020 strings out of 480238
- 294935 string characters out of 5894271
- 563638 words of memory out of 5000000
+ 16025 strings out of 480238
+ 294974 string characters out of 5894271
+ 563641 words of memory out of 5000000
  33657 multiletter control sequences out of 15000+600000
  523892 words of font info for 66 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  70i,11n,76p,270b,758s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}<c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb><c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb><c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri9.pfb><c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/jesic/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-Output written on Essay.pdf (12 pages, 1315545 bytes).
+Output written on Essay.pdf (14 pages, 1321628 bytes).
 PDF statistics:
- 230 PDF objects out of 1000 (max. 8388607)
- 186 compressed objects within 2 object streams
- 52 named destinations out of 1000 (max. 500000)
+ 251 PDF objects out of 1000 (max. 8388607)
+ 204 compressed objects within 3 object streams
+ 57 named destinations out of 1000 (max. 500000)
  105 words of extra memory for PDF output out of 10000 (max. 10000000)
 
