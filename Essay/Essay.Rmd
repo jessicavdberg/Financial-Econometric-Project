@@ -107,13 +107,19 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width 
 # Lets load in example data, and see how this can be stored and later called from your 'data' folder.
 if(!require("tidyverse")) install.packages("tidyverse")
 library(tidyverse)
-library(tidyverse)
-library(devtools)
 library(dplyr)
 library(readxl)
 library("FactoMineR")
 library("factoextra")
 library("corrplot")
+library(gridExtra)
+library(grid)
+library(ggplot2)
+library(lattice)
+library(scales)
+library(ggpmisc)
+library(stats)
+library(tseries)
 
 pacman::p_load("tidyverse", "devtools", "rugarch", "forecast", 
                "tbl2xts", "lubridate", "PerformanceAnalytics", "ggthemes", 
@@ -147,9 +153,6 @@ data <- try1[ , c("date", "Currency", "Value", "Curry", "Curr1")]
 data <- data[, -c(4,5)]
 
 use_data <- data %>% spread(Currency, Value)
-colnames(use_data)
-
-## According to MSCI
 ```
 
 
@@ -169,7 +172,17 @@ res.pca <- PCA(use, graph = FALSE)
 eig.val <- get_eigenvalue(res.pca)
 
 # Scree plot 
-fviz_eig(res.pca, addlabels = TRUE, ylim = c(0, 50))
+scree <- fviz_eig(res.pca, addlabels = TRUE, ylim = c(0, 50))
+
+w <- res.pca[["ind"]][["dist"]]
+date <- use_data$date
+plot_data <- data.frame(date, w)
+pc1 <- plot_data %>% ggplot() + 
+    geom_line(aes(x = plot_data$date, y = plot_data$w), color ="steelblue") + 
+    fmxdat::theme_fmx() +
+    labs(y = "", x ="date", title = "First Principal Component", subtitle = "") +
+    theme(legend.position = "none") 
+
 
 
 ```
@@ -182,118 +195,75 @@ var <- get_pca_var(res.pca)
 
 
 # Coordinates
-head(var$coord)
+obs1 <- head(var$coord)
 # Cos2: quality on the factore map
-head(var$cos2)
+obs2 <- head(var$cos2)
 # Contributions to the principal components
-head(var$contrib)
+obs3 <- head(var$contrib)
 
 
-fviz_pca_var(res.pca, col.var = "black")
+graph1 <- fviz_pca_var(res.pca, col.var = "black")
 
-corrplot(var$cos2, is.corr=FALSE)
+graph2 <- corrplot(var$cos2, is.corr=FALSE)
 
-fviz_cos2(res.pca, choice = "var", axes = 1:2)
+graph3 <- fviz_cos2(res.pca, choice = "var", axes = 1:2)
 
 
 # Contributions of variables to PC1
-fviz_contrib(res.pca, choice = "var", axes = 1, top = 10)
+graph4 <- fviz_contrib(res.pca, choice = "var", axes = 1, top = 10)
 # Contributions of variables to PC2
-fviz_contrib(res.pca, choice = "var", axes = 2, top = 10)
+graph5 <- fviz_contrib(res.pca, choice = "var", axes = 2, top = 10)
 
 # Total contribution by Pc1 and PC2
-fviz_contrib(res.pca, choice = "var", axes = 1:2, top = 10)
+graph6 <- fviz_contrib(res.pca, choice = "var", axes = 1:2, top = 10)
 
 
-fviz_pca_var(res.pca, col.var = "contrib",
+graph7 <- fviz_pca_var(res.pca, col.var = "contrib",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"))
 
-# Calculation of portion of variance explained 
 
 
-eigen.val <- get_eigenvalue(res.pca)
-eigen.val
-
-```
-
-```{r}
-
-## This picture is saved and will be pasted into (just the code for it.)
-g <- data %>% ggplot() + 
-    geom_line(aes(date, Value, color= Currency)) + 
-    fmxdat::theme_fmx() + 
-    facet_wrap(~Currency, scales = "free_y") + 
-    theme(legend.position = "none") 
-
-
-```
-
-
-```{r}
-data_wide <- use_data %>% select(-date)
-
-
-## PCA using princomp 
-
-pca1 <- prcomp(data_wide)
-str(pca1)
-pca1$sdev
-pca1$rotation
-plot(pca1, type = "l")
-summary(pca1)
-PC_Indexes <- predict(pca1)
-
-## PCA using psuch package 
-
-pacman::p_load("psych")
-g <- outlier(data_wide, plot = TRUE, na.rm = TRUE)
-
-violinBy(data_wide %>% as.matrix)
-
-pcapsych <- principal(data_wide, rotate = "varimax")
-
-## FactoMineR and Factroextra
-
-if (!require(FactoMineR)) install.packages("FactoMineR")
-if (!require(factoextra)) install.packages("factoextra")
-
-fviz_screeplot(pca1, ncp = 10)
-
-fviz_pca_var(pca1, col.var = "steelblue") + theme_minimal()
-
-fviz_contrib(pca1, choice = "var", axes = 1)
-
-fviz_contrib(pca1, choice = "var", axes = 2)
-
-fviz_contrib(pca1, choice = "var", axes = 1:2)
 ```
 
 # PCA Analysis 
 
+This paper analysis daily currency rates from the 30th of March 1990 till the 29th of October 2021. The currency rates are all relative to USD.  The currency rates were split into emerging and developing markets according to the Morgan Stanley Capital International (MSCI) 2021 annual market classification. Frontier and standalone markets were not considered. Table \ref{cncy} in appendix A displays the countries under consideration. Ultimately, 12 developing markets and 21 Emerging markets were analysed. Figure \ref{data} in appendix A plots the rates of all 33 currencies.
+
+Analysing 41 emerging and developing market currency rates result in very large datasets that need interpretation. Empirical techniques have been developed to decrease the dimensionality of a large dataset. One such empirical technique is principal component analysis (PCA), which is used to reduce the dimensionality of large datasets in an interpretable way while minimizing information loss.  To achieve this, a new uncorrelated variable is created, known as the principal component, which maximizes the variance @jolli. The PCA yields 33 orthogonal principal components. To examine the relative importance of each principal component, I compare the scale of the eigenvalues of the variance-covariance matrix. The results are displayed in the scree plot in figure \ref{scree}.
+
 \begin{figure}[h]
 \centering
-\includegraphics[width=\linewidth]{scree.jpg}
+\includegraphics[scale=0.7]{scree.jpg}
 \caption{Scree plot}
 \label{scree}
+\end{figure}
+
+The scree plot indicates that the first principal component explains 42.9 percent of the variability, the second explains 27.5 percent and the third explains 10.5 percent. Therefore, the first three principal components explain 80.9 percent of the total variation. Figure \ref{pcpc} displays the first principal component. There is a drastic increase around 2008 during the financial crisis. This reflects the sharp appreciation of the USD against most currencies. The US dollar strengthens due to the global \emph{flight to safety} into US Treasury bills as well as the reversal of carry trades @mcc2009.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.9]{pc1.jpg}
+\caption{First Principal Component }
+\label{pcpc}
 \end{figure}
 
 # Identifying Common Drivers 
 
 The principal component is used to analyse the driving forces. By comparing the eigenvalues of the variance-covariance matrix in the previous section, I determined that the first three principal components explain the majority of the total variance of the currency rates.  In this section, I examine the correlation between the first three principal component and the currency rates, as well as provide economic interpretations around the core driving factors that affect currency rates. 
 
-Table \ref{pca1} in the appendix shows the correlation and p-value for the first principal component (PC1). The country that has the highest positive correlation with PC1 is Hungary (HUF), which is a net importer of crude petroleum. Saudi Arabia (SAR) and the United Arab Emirates (AED) are two of the top exporting countries. China (CNY) is the only country with a negative correlation with PC1, with its top import being refined petroleum.  Therefore, one would expect that the oil price is one of the core PCA drivers for currencies.
+Table \ref{pca1} in appendix B shows the correlation and p-value for the first principal component (PC1). The country that has the highest positive correlation with PC1 is Hungary (HUF), which is a net importer of crude petroleum. Saudi Arabia (SAR) and the United Arab Emirates (AED) are two of the top exporting countries. China (CNY) is the only country with a negative correlation with PC1, with its top import being refined petroleum.  Therefore, one would expect that the oil price is one of the core PCA drivers for currencies.
 
 Oil is an extremely important, non-renewable resource. The demand and price for oil tend to drastically increase with world economic development @li2015. Crude oil is quoted in the U.S dollar, therefore there is a direct relationship between the two. Theoretically, an appreciation in the US dollar should cause a decrease in the price of oil. However, empirical research has found contradicting results, indicating a bi-directional causality relationship between oil and exchange rates @beck2020.  Fluctuations in the oil prices are diverse and unique, depending on whether a country is a net importing or net exporting country. For oil-importing countries, @castro found that an oil price shock leads to depreciation of the home currency in the short run, however, the long-run effects are diverse.
 
 For oil-exporting countries, it has been empirically proven that instability in the oil price does not have a significant effect on economic growth. Table \ref{pca1} supports the results of @can2021 who found a much stronger correlation for oil-importing countries. China is a unique case has it is one of the largest importers and exporters of oil. @li2015 found a non-linear causality between the oil price and the RMB exchange rate. This indicates that movement in the price of oil can cause co-movement of RMB with a one-month lag. Since the relationship between the oil price and exchange rates are diverse and unique, policymakers should react with caution when examining exchange rate pressure.
 
-Table \ref{pca2} in the appendix displays the correlation and the p-value for the second principal component (PC2). The countries that have the highest correlation with PC2 are, amongst others, Singapore (SGD), New Zealand (NZD), Australia (AUD) and Canada (CAD), all developing market economies. The countries with the lowest correlation with PC2 are Turkey (TRY), Egypt (EGP) and Mexico (MXN). This suggest that the PC2 is related to political stability. Countries with a high political stability and absence of violence/terrorism ranking are highly correlated with PC2, whereas countries with a low ranking are often negatively correlated with PC2. 
+Table \ref{pca2} in appendix B displays the correlation and the p-value for the second principal component (PC2). The countries that have the highest correlation with PC2 are, amongst others, Singapore (SGD), New Zealand (NZD), Australia (AUD) and Canada (CAD), all developing market economies. The countries with the lowest correlation with PC2 are Turkey (TRY), Egypt (EGP) and Mexico (MXN). This suggest that the PC2 is related to political stability. Countries with a high political stability and absence of violence/terrorism ranking are highly correlated with PC2, whereas countries with a low ranking are often negatively correlated with PC2. 
 
 A country with a high political stability ranking offer much more safe and attractive investment opportunity for foreign investors. This implies that political stability has a significant effect on currency rates. Political unrest, such a serious allegation into government conduct can contribute to the destabilization of an economy, which will weaken currency rates. Changes in currency rates are known as \emph{exchange rate risk} which accounts for uncertainty in movement in the exchange rate between the home and receiver country @higg.
 
 Although the effect of political instability is profound, @levis found that the relationship between political instability in developed countries and foreign direct invest are highly significant in the short run, but not the long run. This would suggest that foreign investors adjust quickly to new developments and that political stability should be considered in conjunction with numerous other relevant factors. 
 
-The correlation and the p-value for the third principal component is represented in Table \ref{pca3} in the appendix. The countries with the largest correlation all appear in Asia and the countries with the lowest correlation are all developed market. This implies that the third principal component is an Asia-specific factor. Over the past few areas, Asian countries have experienced phenomenal growth, which has created profitable opportunities for foreign investors. 
+The correlation and the p-value for the third principal component is represented in Table \ref{pca3} in appendix B. The countries with the largest correlation all appear in Asia and the countries with the lowest correlation are all developed market. This implies that the third principal component is an Asia-specific factor. Over the past few areas, Asian countries have experienced phenomenal growth, which has created profitable opportunities for foreign investors. 
 
 # Forecasting 
 
@@ -314,7 +284,7 @@ Forecasting currency rates is important to many fields such as international bus
 \label{for}
 \end{figure}
 
-I employ the 30 periods ahead Autoregressive Integrated Moving Average (ARIMA) model to forecast currency rates. @akin found that the ARIMA model performs relatively well when compared to other forecasting methods. Figure \ref{for1} and figure \ref{for2} show the forecasting results for the selected currencies with a 95 per cent upper and lower bound. The forecast results indicate that the USD/GBP rate is forecasted to decrease, implying that the Pound sterling is going to strengthen. However, the actual data shows the opposite effect, the GBP currency rate weakened. 
+I employ a 30 period ahead Autoregressive Integrated Moving Average (ARIMA) model to forecast currency rates. @akin found that the ARIMA model performs relatively well when compared to other forecasting methods. Figure \ref{for1} and figure \ref{for2} show the forecasting results for the selected currencies with a 95 per cent upper and lower bound. The forecast results indicate that the USD/GBP rate is forecasted to decrease, implying that the Pound sterling is going to strengthen. However, the actual data shows the opposite effect, the GBP currency rate weakened. 
 
 The forecast results indicate that the USD/EU rate is forecasted to increase slightly, implying that the euro is going to decrease. Actual data support this forecast. The forecast results indicate that the USD/JPY rate is forecasted to decrease slightly, implying that the Pound sterling is going to strengthen. Actual data shows that the currency rate remained relatively stable, making the forecast results mostly accurate. The results should be further investigated to conclude on the forecast accuracy, however, this was out of the scope of this paper. 
 
@@ -341,7 +311,6 @@ The forecast results indicate that the USD/EU rate is forecasted to increase sli
 \end{figure}
 
 
-
 # Conclusion
 
 
@@ -351,8 +320,7 @@ The forecast results indicate that the USD/EU rate is forecasted to increase sli
 
 <div id="refs"></div>
 
-
-# Appendix {-}
+# Appendix A {-}
 
 \begin{table}
 \begin{center}
@@ -389,6 +357,27 @@ Polish złoty & PLN & & \\
  \label{cncy}
 \end{center}
 \end{table}
+
+```{r}
+
+## This picture is saved and will be pasted into (just the code for it.)
+g <- data %>% ggplot() + 
+    geom_line(aes(date, Value, color= Currency)) + 
+    fmxdat::theme_fmx() + 
+    facet_wrap(~Currency, scales = "free_y") + 
+    theme(legend.position = "none") 
+
+
+```
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.55]{descriptive.jpg}
+\caption{Currency rates of all 33 emerging and developing market countries}
+\label{data}
+\end{figure}
+
+# Apprendix B {-}
 
 ```{r}
 # This shows the correlation and p-value. 
