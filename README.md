@@ -107,7 +107,7 @@ graph1 <- fviz_pca_var(res.pca, col.var = "black")
 
 graph2 <- corrplot(var$cos2, is.corr=FALSE)
 
-graph <- 3fviz_cos2(res.pca, choice = "var", axes = 1:2)
+graph <- fviz_cos2(res.pca, choice = "var", axes = 1:2)
 
 
 # Contributions of variables to PC1
