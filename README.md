@@ -1,4 +1,4 @@
-# FM_project
+# Finanical Econometric Project
 
 Using principal component analysis, I identify the core driving factors of emerging and developing market currency rates. I analyse 33 currencies from 1994-03-30 to 2021-10-29. I find that the first principal component is related to commodities, especially oil. The second principal component relates to political instability and the absence of violence/terrorism. The third principal component relates to some Asian factor.  These factors can be used in further studies to make predictions about currency rates and determine whether they are under/overvalued.
  
